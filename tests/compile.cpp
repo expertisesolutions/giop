@@ -6,7 +6,7 @@
  */
 
 #include <giop/integer.hpp>
-#include <iiop/int_parser.hpp>
+#include <iiop/integer_parser.hpp>
 #include <iiop/iiop_parse.hpp>
 
 
