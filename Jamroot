@@ -8,5 +8,6 @@ alias giop : : : : <include>include <include>../boost ;
 alias test
 : [ testing.compile tests/compile.cpp /giop//giop ]
   [ testing.run     tests/parse_iiop.cpp /giop//giop ]
+  [ testing.run     tests/generate_iiop.cpp /giop//giop ]
  ;
  

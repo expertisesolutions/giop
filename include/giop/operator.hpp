@@ -32,14 +32,14 @@ namespace giop {
 template <typename Left, typename Right>
 inline
 x3::sequence
-<typename x3::extension::as_parser<Left>::value_type
- , typename x3::extension::as_parser<Right>::value_type
+<typename x3::extension::as_both<Left>::value_type
+ , typename x3::extension::as_both<Right>::value_type
  >
 operator&(Left const& left, Right const& right)
 {
-  return {x3::as_parser(left), x3::as_parser(right)};
+  return {x3::as_both(left), x3::as_both(right)};
 }
-
+  
 }
 
 #endif

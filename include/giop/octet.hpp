@@ -12,7 +12,8 @@ namespace giop {
 
 namespace x3 = boost::spirit::x3;
 
-struct octet_parser : x3::parser<octet_parser>
+struct octet_partor : x3::parser<octet_partor>
+                    , x3::generator<octet_partor>
 {
   typedef int attribute_type;
   static bool const has_attribute = true;
@@ -23,9 +24,16 @@ struct octet_parser : x3::parser<octet_parser>
   {
     return octet_parse(*this, first, last, context, x3::unused, attr);
   }
+
+  template <typename OutputIterator, typename Context, typename Attribute>
+  bool generate(OutputIterator& first
+                , Context const& context, x3::unused_type, Attribute& attr) const
+  {
+    return octet_generate(*this, first, context, x3::unused, attr);
+  }
 };
   
-octet_parser octet = {};
+octet_partor octet = {};
   
 }
 

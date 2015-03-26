@@ -12,13 +12,20 @@
 
 namespace giop {
 
-struct string_terminal : x3::parser<string_terminal>
+struct string_terminal : x3::parser<string_terminal>, x3::generator_base
 {
   template <typename Iterator, typename Context, typename RContext, typename Attribute>
   bool parse(Iterator& first, Iterator const& last
              , Context const& context, RContext const& rcontext, Attribute& attr) const
   {
     return string_parse(*this, first, last, context, rcontext, attr);
+  }  
+
+  template <typename OutputIterator, typename Context, typename RContext, typename Attribute>
+  bool generate(OutputIterator& first
+                , Context const& context, RContext const& rcontext, Attribute& attr) const
+  {
+    return string_generate(*this, first, context, rcontext, attr);
   }  
 };
 

@@ -26,17 +26,24 @@ bool integer_parse(mpl::identity<class giop::ushort_>, Iterator& first, Iterator
 {
   return unsigned_parser<16u>().parse(first, last, context, x3::unused, attr);
 }
+
+template <typename OutputIterator, typename Context, typename Attribute>
+bool integer_generate(mpl::identity<class giop::ushort_>, OutputIterator& first
+                      , Context const& context, x3::unused_type, Attribute& attr)
+{
+  return unsigned_generator<16u>().generate(first, context, x3::unused, attr);
+}
   
 }
 
-namespace boost { namespace spirit { namespace x3 { namespace traits { namespace detail {
+namespace boost { namespace spirit { namespace x3 { namespace traits {
 
 template <typename Context>
-struct default_attribute_of<giop::integer_terminal<class giop::ushort_>, Context>
+struct attribute_of<giop::integer_terminal<class giop::ushort_>, Context>
 {
   typedef boost::uint_t<16u>::least type;
 };
         
-} } } } }
+} } } }
 
 #endif

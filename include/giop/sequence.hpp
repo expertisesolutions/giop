@@ -14,6 +14,7 @@ namespace giop {
 
 template <typename Subject>
 struct sequence_directive : x3::unary_parser<Subject, sequence_directive<Subject>>
+  , x3::generator_base
 {
   typedef x3::unary_parser<Subject, sequence_directive<Subject>> base_type;
 
@@ -23,7 +24,14 @@ struct sequence_directive : x3::unary_parser<Subject, sequence_directive<Subject
   {
     return sequence_parse(*this, first, last, context, rcontext, attr);
   }  
-  
+
+  template <typename OutputIterator, typename Context, typename RContext, typename Attribute>
+  bool generate(OutputIterator& first
+             , Context const& context, RContext const& rcontext, Attribute& attr) const
+  {
+    return sequence_generate(*this, first, context, rcontext, attr);
+  }
+
   sequence_directive(Subject const& subject)
     : base_type(subject) {}
 };

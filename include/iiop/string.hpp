@@ -28,7 +28,7 @@ bool string_parse(giop::string_terminal const&, Iterator& first, Iterator const&
   if(!r)
     return false;
 
-  giop::octet_parser octet;
+  giop::octet_partor octet;
   for(;size > 1 && r;--size)
     {
       if(!x3::detail::parse_into_container(octet, first, last, context, x3::unused, attr))
@@ -39,6 +39,44 @@ bool string_parse(giop::string_terminal const&, Iterator& first, Iterator const&
   unsigned char c = 0;
   r = octet.parse(first, last, context, x3::unused, c);
   return r && c == 0;
+}
+
+template <typename OutputIterator, typename Context, typename Attribute>
+bool string_generate(giop::string_terminal const&, OutputIterator& sink
+                     , Context const& context, x3::unused_type, Attribute& attr)
+{
+  unsigned_generator<32u> unsigned_;
+  boost::uint_t<32>::least size = attr.size()+1;
+  bool r = unsigned_.generate(sink, context, x3::unused, size);
+  giop::octet_partor octet;
+  for(auto first = x3::traits::begin(attr)
+        , last = x3::traits::end(attr)
+        ;first != last; ++first)
+  {
+    octet.generate(sink, context, x3::unused, *first);
+  }
+  char zero = '\0';
+  octet.generate(sink, context, x3::unused, zero);
+  return r;
+
+  // unsigned_generator<32u> unsigned_;
+  // bool r = unsigned_.generate(first, context, x3::unused, attr.size());
+  // std::cout << "sequence size " << attr.size() << std::endl;
+
+  // if(!r)
+  //   return false;
+
+  // giop::octet_partor octet;
+  // for(;size > 1 && r;--size)
+  //   {
+  //     if(!x3::detail::parse_into_container(octet, first, last, context, x3::unused, attr))
+  //       return false;
+  //   }
+  // if(size != 1 || !r)
+  //   return false;
+  // unsigned char c = 0;
+  // r = octet.parse(first, last, context, x3::unused, c);
+  // return r;
 }
 
 }

@@ -19,7 +19,7 @@ namespace x3 = boost::spirit::x3;
 namespace mpl = boost::mpl;
   
 template <typename T>
-struct integer_terminal : x3::parser<integer_terminal<T>>
+struct integer_terminal : x3::parser<integer_terminal<T>>, x3::generator_base
 {
   static bool const has_attribute = true;
 
@@ -28,6 +28,13 @@ struct integer_terminal : x3::parser<integer_terminal<T>>
              , Context const& context, x3::unused_type, Attribute& attr) const
   {
     return integer_parse(mpl::identity<T>(), first, last, context, x3::unused, attr);
+  }
+
+  template <typename OutputIterator, typename Context, typename Attribute>
+  bool generate(OutputIterator& first
+                , Context const& context, x3::unused_type, Attribute& attr) const
+  {
+    return integer_generate(mpl::identity<T>(), first, context, x3::unused, attr);
   }
 };
 

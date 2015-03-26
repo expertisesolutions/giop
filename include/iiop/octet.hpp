@@ -16,7 +16,7 @@ namespace iiop {
 namespace x3 = boost::spirit::x3;
   
 template <typename Iterator, typename Context, typename Attribute>
-bool octet_parse(giop::octet_parser const&, Iterator& first, Iterator const& last
+bool octet_parse(giop::octet_partor const&, Iterator& first, Iterator const& last
                  , Context const& context, x3::unused_type, Attribute& attr)
 {
   if(first != last)
@@ -32,16 +32,25 @@ bool octet_parse(giop::octet_parser const&, Iterator& first, Iterator const& las
     }
 }
 
+template <typename OutputIterator, typename Context, typename Attribute>
+bool octet_generate(giop::octet_partor const&, OutputIterator& first
+                    , Context const& context, x3::unused_type, Attribute& attr)
+{
+  *first++ = attr;
+  std::cout << "octet generated " << (int)attr << std::endl;
+  return true;
 }
 
-namespace boost { namespace spirit { namespace x3 { namespace traits { namespace detail {
+}
+
+namespace boost { namespace spirit { namespace x3 { namespace traits {
 
 template <typename Context>
-struct default_attribute_of<giop::octet_parser, Context>
+struct attribute_of<giop::octet_partor, Context>
 {
   typedef unsigned char type;
 };
         
-} } } } }
+} } } }
 
 #endif

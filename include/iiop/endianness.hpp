@@ -22,7 +22,7 @@ inline bool endianness_parse(giop::endianness_directive<Subject> const& self
 {
   std::cout << "endianness_parse" << std::endl;
   unsigned char octet;
-  if(giop::octet_parser().parse(first, last, context, x3::unused, octet))
+  if(giop::octet_partor().parse(first, last, context, x3::unused, octet))
     {
       std::cout << "endianness " << (int)octet << std::endl;
       return self.subject.parse(first, last, context, rcontext, attr);

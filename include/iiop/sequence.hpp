@@ -41,6 +41,24 @@ bool sequence_parse(giop::sequence_directive<Subject> const& self
     }
   return r;
 }
+
+template <typename Subject, typename OutputIterator, typename Context, typename RContext, typename Attribute>
+bool sequence_generate(giop::sequence_directive<Subject> const& self
+                       , OutputIterator& sink
+                       , Context const& context, RContext const& rcontext, Attribute& attr)
+{  
+  unsigned_generator<32u> unsigned_;
+  boost::uint_t<32>::least size = attr.size();
+  bool r = unsigned_.generate(sink, context, x3::unused, size);
+  for(auto
+        first = x3::traits::begin(attr)
+        , last = x3::traits::end(attr)
+        ;first != last; ++first)
+  {
+    r = self.subject.generate(sink, context, x3::unused, *first);
+  }
+  return r;
+}
   
 }
 
